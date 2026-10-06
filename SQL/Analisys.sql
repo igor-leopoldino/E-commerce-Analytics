@@ -58,3 +58,8 @@ from items
 GROUP by Id_Vendedor
 Order by Faturamento Desc
 limit 5
+
+-- Prazo médio de entrega
+select
+Round(Avg(julianday(orders.order_delivered) - julianday(orders.order_purchase_t)),0) as Média_Entrega_Dia
+from orders
