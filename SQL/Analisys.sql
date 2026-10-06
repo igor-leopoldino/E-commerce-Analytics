@@ -49,3 +49,12 @@ INNER JOIN orders
 on customers.customer_id = orders.customer_id
 GROUP by Estado
 Order By Quantidade desc
+
+-- Vendedores que mais faturam
+SELECT
+  items.seller_id as Id_Vendedor,
+  round(sum(items.price),2) as Faturamento
+from items
+GROUP by Id_Vendedor
+Order by Faturamento Desc
+limit 5
