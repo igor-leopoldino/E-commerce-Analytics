@@ -88,3 +88,32 @@ on reviews.order_id = orders.order_id
 WHERE orders.order_delivered > orders.order_estimated
 GROUP by Dias_Atraso
 order by Dias_Atraso Desc
+
+-- Taxa de recompra
+SELECT
+	Qtd_Recompra,
+    Qtd_Total_Clientes,
+    round((Qtd_Recompra * 100.0 / Qtd_Total_Clientes),2) as Taxa_Recompra
+    FROM
+(
+  select
+(
+  SELECT
+	COUNT(DISTINCT customers.customer_unique) 
+  FROM customers
+  ) as Qtd_Total_Clientes,
+(
+  Select
+	Count(*) as Qtd_Recompra
+FROM
+(
+select
+  	count(DISTINCT orders.order_id) as Qtd_Compra
+from customers
+INNER join orders
+	on customers.customer_id = orders.customer_id
+GROUP by customers.customer_unique
+Having Qtd_Compra > 1
+)
+  ) as Qtd_Recompra
+  )
