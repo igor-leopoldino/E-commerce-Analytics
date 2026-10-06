@@ -38,4 +38,14 @@ from products
 INNER join items
 on products.product_id = items.product_id
 GROUP by Categoria_Produtos
-Order by Faturamento desc 
+Order by Faturamento desc
+
+-- Estados que mais compram
+select
+    customers.customer_state as Estado,
+    count(*) as Quantidade
+from customers
+INNER JOIN orders
+on customers.customer_id = orders.customer_id
+GROUP by Estado
+Order By Quantidade desc
