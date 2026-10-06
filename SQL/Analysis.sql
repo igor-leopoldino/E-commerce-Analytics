@@ -117,3 +117,16 @@ Having Qtd_Compra > 1
 )
   ) as Qtd_Recompra
   )
+
+-- Clientes mais valiosos
+SELECT
+	customers.customer_unique as Id_Cliente,
+    round(sum(payments.payment_value),2) as Total_Pago
+from customers
+Inner join orders
+	on customers.customer_id = orders.customer_id
+inner join payments
+	on payments.order_id = orders.order_id
+group by Id_Cliente
+order by Total_Pago DESC
+limit 5
