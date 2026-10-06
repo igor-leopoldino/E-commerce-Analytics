@@ -63,3 +63,15 @@ limit 5
 select
 Round(Avg(julianday(orders.order_delivered) - julianday(orders.order_purchase_t)),0) as Média_Entrega_Dia
 from orders
+
+-- Produtos com mais atrasos
+select 
+  items.product_id as Id_Produto,
+  round(Avg(julianday(orders.order_delivered) - julianday(orders.order_estimated)),0) as Dias_Atraso
+from orders
+INNER join items
+on orders.order_id = items.order_id
+where orders.order_delivered > orders.order_estimated
+GROUP by Id_Produto
+order by Dias_Atraso Desc
+limit 5
