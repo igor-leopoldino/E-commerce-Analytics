@@ -75,3 +75,16 @@ where orders.order_delivered > orders.order_estimated
 GROUP by Id_Produto
 order by Dias_Atraso Desc
 limit 5
+
+-- Atraso x Avaliação
+select
+	round(julianday(orders.order_delivered) 
+          - julianday(orders.order_estimated),0) as Dias_Atraso,
+    round(Avg(reviews.review_score),2) as Avaliação_Média,
+    count(DISTINCT orders.order_id) as Quantidade_Pedido
+from reviews
+INNER JOIN orders
+on reviews.order_id = orders.order_id
+WHERE orders.order_delivered > orders.order_estimated
+GROUP by Dias_Atraso
+order by Dias_Atraso Desc
