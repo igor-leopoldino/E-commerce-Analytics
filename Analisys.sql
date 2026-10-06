@@ -1,0 +1,41 @@
+--Faturamento Mensal
+select 
+Round(SUM(payments.payment_value),2) as Faturamento,
+strftime('%Y-%m' ,orders.order_purchase_t) as Data_Venda
+from payments
+inner JOIN orders
+on orders.order_id = payments.order_id
+GROUP BY Data_Venda
+order by Data_Venda
+
+-- Ticket Médio
+select 
+round(avg(Valor_Pedido),2) as Ticket_Médio
+from
+(
+  sELECT
+  payments.order_id as Id_Pedido,
+  round(sum(payments.payment_value),2) as Valor_Pedido
+  from payments
+  GROUP by payments.order_id
+ )
+
+-- Categorias que mais vendem
+select 
+  products.product_category as Categoria_Produto,
+  COUNT(*) as Quantidade
+from items
+INNER join products
+on items.product_id = products.product_id
+GROUP by Categoria_Produto
+order by Quantidade desc;
+
+-- Categorias que mais faturam
+select
+  products.product_category as Categoria_Produtos,
+  Round(Sum(items.price),2) as Faturamento
+from products
+INNER join items
+on products.product_id = items.product_id
+GROUP by Categoria_Produtos
+Order by Faturamento desc 
